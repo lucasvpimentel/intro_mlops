@@ -21,21 +21,21 @@ Uso:
     python src/simulation/generate_batch.py [--drift none|low|high]
 """
 
-import os
 import sys
 import json
 import argparse
 import numpy as np
+from pathlib import Path
 
 # Caminho raiz do exercicio
-ROOT = os.path.normpath(os.path.join(os.path.dirname(__file__), "..", ".."))
-sys.path.insert(0, ROOT)
+ROOT = Path(__file__).parent.parent
+sys.path.insert(0, str(ROOT))
 
 # Estatisticas de referencia geradas pelo prepare_reference.py
-REF_PATH   = os.path.join(ROOT, "data", "reference_stats.json")
+REF_PATH   = ROOT / "data" / "reference_stats.json"
 
 # Arquivo de saida: o lote simulado que o detector vai analisar
-BATCH_PATH = os.path.join(ROOT, "data", "new_batch.json")
+BATCH_PATH = ROOT / "data" / "new_batch.json"
 
 # Features do Iris Dataset
 FEATURES = ["sepal_length", "sepal_width", "petal_length", "petal_width"]
@@ -59,7 +59,7 @@ def generate_batch(drift_level: str = "none", n_samples: int = 50):
     """
 
     # Verifica se as estatisticas de referencia existem
-    if not os.path.exists(REF_PATH):
+    if not REF_PATH.exists():
         print("reference_stats.json nao encontrado.")
         print("Execute: python main.py prepare")
         sys.exit(1)

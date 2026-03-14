@@ -5,14 +5,14 @@ Responsabilidade: receber os resultados do detector, imprimir no
 terminal de forma legivel e salvar o relatorio em JSON.
 """
 
-import os
 import json
 from datetime import datetime  # para registrar o timestamp do relatorio
+from pathlib import Path
 
 
 # Caminho padrao do relatorio de saida
-ROOT        = os.path.normpath(os.path.join(os.path.dirname(__file__), "..", ".."))
-REPORT_PATH = os.path.join(ROOT, "data", "drift_report.json")
+ROOT        = Path(__file__).parent.parent
+REPORT_PATH = ROOT / "data" / "drift_report.json"
 
 
 def save_report(detection_result: dict, batch_size: int):

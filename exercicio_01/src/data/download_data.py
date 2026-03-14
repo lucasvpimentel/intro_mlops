@@ -18,8 +18,8 @@ from sklearn.datasets import load_iris
 # pandas: biblioteca para manipulacao de tabelas de dados (DataFrames)
 import pandas as pd
 
-# os: modulo para trabalhar com caminhos de arquivos e diretorios
-import os
+# pathlib: modulo para trabalhar com caminhos de arquivos e diretorios
+from pathlib import Path
 
 
 def download():
@@ -61,12 +61,8 @@ def download():
 
     # Monta o caminho absoluto para data/raw.csv
     # __file__ e o caminho deste proprio arquivo (download_data.py)
-    # Subindo dois niveis ("..","..") chegamos na raiz do projeto
-    out_path = os.path.join(
-        os.path.dirname(__file__), "..", "..", "data", "raw.csv"
-    )
-    # normpath remove redundancias como ".." do caminho final
-    out_path = os.path.normpath(out_path)
+    # Subindo dois niveis chegamos na raiz do projeto
+    out_path = Path(__file__).parent.parent / "data" / "raw.csv"
 
     # Salva o DataFrame como CSV sem incluir o indice numerico do pandas
     df.to_csv(out_path, index=False)

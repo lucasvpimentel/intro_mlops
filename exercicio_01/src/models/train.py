@@ -13,8 +13,8 @@ Como executar diretamente:
     python src/models/train.py
 """
 
-import os      # manipulacao de caminhos e diretorios
 import sys     # manipulacao do caminho de busca de modulos Python
+from pathlib import Path
 import joblib  # salvar e carregar objetos Python em disco (mais eficiente que pickle para sklearn)
 import pandas as pd  # leitura e manipulacao do CSV
 
@@ -24,15 +24,15 @@ from sklearn.model_selection import train_test_split  # divide dados em treino e
 from sklearn.metrics import classification_report     # relatorio de precisao/recall/f1
 
 # ROOT e o caminho absoluto da raiz do projeto (dois niveis acima deste arquivo)
-ROOT = os.path.normpath(os.path.join(os.path.dirname(__file__), "..", ".."))
+ROOT = Path(__file__).parent.parent
 
 # Adiciona a raiz ao path de busca do Python para que imports como
 # "from src.data..." funcionem mesmo ao rodar este arquivo diretamente
-sys.path.insert(0, ROOT)
+sys.path.insert(0, str(ROOT))
 
 # Caminhos dos arquivos que este script le e escreve
-DATA_PATH  = os.path.join(ROOT, "data", "raw.csv")                    # entrada: dados brutos
-MODEL_PATH = os.path.join(ROOT, "data", "models", "iris_model.joblib") # saida: modelo serializado
+DATA_PATH  = ROOT / "data" / "raw.csv"                    # entrada: dados brutos
+MODEL_PATH = ROOT / "data" / "models" / "iris_model.joblib" # saida: modelo serializado
 
 # Lista das colunas usadas como entrada (features) do modelo
 FEATURES = ["sepal_length", "sepal_width", "petal_length", "petal_width"]
@@ -55,14 +55,14 @@ def train():
     """
 
     # Reprodutibilidade: se o arquivo de dados nao existe, baixa automaticamente
-    if not os.path.exists(DATA_PATH):
+    if not DATA_PATH.exists():
         print("raw.csv nao encontrado. Baixando dataset automaticamente...")
         from src.data.download_data import download  # importa aqui para evitar importacao circular
         download()
 
     # Cria a pasta data/models/ se ela ainda nao existir
     # exist_ok=True evita erro caso a pasta ja exista
-    os.makedirs(os.path.dirname(MODEL_PATH), exist_ok=True)
+    MODEL_PATH.parent.mkdir(parents=True, exist_ok=True)
 
     # Le o CSV e carrega como DataFrame do pandas
     df = pd.read_csv(DATA_PATH)

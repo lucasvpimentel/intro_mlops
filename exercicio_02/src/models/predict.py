@@ -19,17 +19,17 @@ Fluxo de inferencia:
         -> retornar o valor previsto
 """
 
-import os     # caminhos de arquivo
 import sys    # encerrar com erro se artefatos nao encontrados
+from pathlib import Path
 import joblib # carregar os objetos salvos em disco
 import pandas as pd  # criar DataFrame com nomes de coluna para evitar warnings
 
 # Caminho raiz do projeto
-ROOT = os.path.normpath(os.path.join(os.path.dirname(__file__), "..", ".."))
+ROOT = Path(__file__).parent.parent
 
 # Caminhos dos artefatos gerados pelo pipeline de treino
-SCALER_PATH = os.path.join(ROOT, "data", "scaler.joblib")          # gerado por build_features.py
-MODEL_PATH  = os.path.join(ROOT, "data", "models", "model.joblib") # gerado por train.py
+SCALER_PATH = ROOT / "data" / "scaler.joblib"          # gerado por build_features.py
+MODEL_PATH  = ROOT / "data" / "models" / "model.joblib" # gerado por train.py
 
 # Mesma lista de features usada no treino — a ordem importa!
 FEATURES = ["age", "sex", "bmi", "bp", "s1", "s2", "s3", "s4", "s5", "s6"]
@@ -48,7 +48,7 @@ def load_artifacts():
     """
 
     # Verifica quais arquivos estao faltando
-    missing = [p for p in [SCALER_PATH, MODEL_PATH] if not os.path.exists(p)]
+    missing = [p for p in [SCALER_PATH, MODEL_PATH] if not p.exists()]
     if missing:
         for p in missing:
             print(f"Nao encontrado: {p}")

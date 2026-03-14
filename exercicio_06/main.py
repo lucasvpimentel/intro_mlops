@@ -26,16 +26,16 @@ def cmd_simulate(args):
 
 def cmd_detect(_args):
     import json
-    import os
+    from pathlib import Path
     from src.monitoring.detector import detect_drift
     from src.monitoring.report import save_report
 
-    root       = os.path.dirname(__file__)
-    ref_path   = os.path.join(root, "data", "reference_stats.json")
-    batch_path = os.path.join(root, "data", "new_batch.json")
+    root       = Path(__file__).parent
+    ref_path   = root / "data" / "reference_stats.json"
+    batch_path = root / "data" / "new_batch.json"
 
     for path in [ref_path, batch_path]:
-        if not os.path.exists(path):
+        if not path.exists():
             print(f"Arquivo nao encontrado: {path}")
             return
 

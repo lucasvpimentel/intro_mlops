@@ -21,8 +21,8 @@ Como executar diretamente:
     python src/features/build_features.py
 """
 
-import os     # caminhos de arquivo
 import sys    # encerrar com mensagem de erro
+from pathlib import Path
 import joblib # serializar o scaler em disco
 import pandas as pd  # leitura do CSV e montagem do DataFrame normalizado
 
@@ -30,10 +30,10 @@ import pandas as pd  # leitura do CSV e montagem do DataFrame normalizado
 from sklearn.preprocessing import StandardScaler
 
 # Caminhos calculados relativos a este arquivo
-ROOT        = os.path.normpath(os.path.join(os.path.dirname(__file__), "..", ".."))
-DATA_PATH   = os.path.join(ROOT, "data", "raw.csv")        # CSV bruto de entrada
-SCALER_PATH = os.path.join(ROOT, "data", "scaler.joblib")  # scaler serializado de saida
-PROC_PATH   = os.path.join(ROOT, "data", "processed.csv")  # CSV normalizado de saida
+ROOT        = Path(__file__).parent.parent
+DATA_PATH   = ROOT / "data" / "raw.csv"        # CSV bruto de entrada
+SCALER_PATH = ROOT / "data" / "scaler.joblib"  # scaler serializado de saida
+PROC_PATH   = ROOT / "data" / "processed.csv"  # CSV normalizado de saida
 
 # As 13 features quimicas — mesmos nomes do download_data.py
 FEATURES = [
@@ -61,7 +61,7 @@ def build(save_processed: bool = True):
     """
 
     # Verifica se o arquivo de entrada existe
-    if not os.path.exists(DATA_PATH):
+    if not DATA_PATH.exists():
         print("raw.csv nao encontrado. Execute: python main.py download")
         sys.exit(1)
 

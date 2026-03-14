@@ -7,17 +7,17 @@ O Diabetes Dataset ja vem pre-normalizado pelo sklearn (media ~0, std ~0.05).
 Os deslocamentos de drift sao proporcionais ao desvio padrao real de cada feature.
 """
 
-import os
 import sys
 import json
 import argparse
 import numpy as np
+from pathlib import Path
 
-ROOT = os.path.normpath(os.path.join(os.path.dirname(__file__), "..", ".."))
-sys.path.insert(0, ROOT)
+ROOT = Path(__file__).parent.parent
+sys.path.insert(0, str(ROOT))
 
-REF_PATH   = os.path.join(ROOT, "data", "reference_stats.json")
-BATCH_PATH = os.path.join(ROOT, "data", "new_batch.json")
+REF_PATH   = ROOT / "data" / "reference_stats.json"
+BATCH_PATH = ROOT / "data" / "new_batch.json"
 
 FEATURES    = ["age", "sex", "bmi", "bp", "s1", "s2", "s3", "s4", "s5", "s6"]
 RANDOM_SEED = 42
@@ -37,7 +37,7 @@ def generate_batch(drift_level: str = "none", n_samples: int = 100):
         n_samples   (int): numero de pacientes a gerar
     """
 
-    if not os.path.exists(REF_PATH):
+    if not REF_PATH.exists():
         print("reference_stats.json nao encontrado. Execute: python main.py prepare")
         sys.exit(1)
 

@@ -9,17 +9,17 @@ Niveis de drift:
     high: drift alto — deslocamento de 2.0 * std com maior variancia
 """
 
-import os
 import sys
 import json
 import argparse
 import numpy as np
+from pathlib import Path
 
-ROOT = os.path.normpath(os.path.join(os.path.dirname(__file__), "..", ".."))
-sys.path.insert(0, ROOT)
+ROOT = Path(__file__).parent.parent
+sys.path.insert(0, str(ROOT))
 
-REF_PATH   = os.path.join(ROOT, "data", "reference_stats.json")
-BATCH_PATH = os.path.join(ROOT, "data", "new_batch.json")
+REF_PATH   = ROOT / "data" / "reference_stats.json"
+BATCH_PATH = ROOT / "data" / "new_batch.json"
 
 FEATURES = [
     "alcohol", "malic_acid", "ash", "alcalinity_of_ash", "magnesium",
@@ -38,7 +38,7 @@ def generate_batch(drift_level: str = "none", n_samples: int = 60):
         n_samples   (int): numero de vinhos a gerar (padrao: 60)
     """
 
-    if not os.path.exists(REF_PATH):
+    if not REF_PATH.exists():
         print("reference_stats.json nao encontrado. Execute: python main.py prepare")
         sys.exit(1)
 

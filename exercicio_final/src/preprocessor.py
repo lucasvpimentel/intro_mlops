@@ -18,22 +18,22 @@ Por que separar fit de transform?
     seria data leakage e causaria inconsistencia nos dados.
 """
 
-import os
 import pandas as pd
 import numpy as np
 import joblib
+from pathlib import Path
 from sklearn.preprocessing import StandardScaler, LabelEncoder
 from sklearn.impute import SimpleImputer
 
 # Caminhos dos artefatos salvos (relativos a raiz do projeto)
-ROOT        = os.path.normpath(os.path.join(os.path.dirname(__file__), ".."))
-MODELS_DIR  = os.path.join(ROOT, "models")
+ROOT        = Path(__file__).parent.parent
+MODELS_DIR  = ROOT / "models"
 
 # Nomes dos arquivos de artefatos
-PATH_LE_SEX     = os.path.join(MODELS_DIR, "le_sex.joblib")
-PATH_LE_ISLAND  = os.path.join(MODELS_DIR, "le_island.joblib")
-PATH_LE_SPECIES = os.path.join(MODELS_DIR, "le_species.joblib")
-PATH_SCALER     = os.path.join(MODELS_DIR, "scaler.joblib")
+PATH_LE_SEX     = MODELS_DIR / "le_sex.joblib"
+PATH_LE_ISLAND  = MODELS_DIR / "le_island.joblib"
+PATH_LE_SPECIES = MODELS_DIR / "le_species.joblib"
+PATH_SCALER     = MODELS_DIR / "scaler.joblib"
 
 # Definicao das colunas
 FEATURE_COLS = ["bill_length_mm", "bill_depth_mm", "flipper_length_mm", "sex", "island"]
@@ -65,7 +65,7 @@ def limpar_e_preparar(df: pd.DataFrame, modo_treino: bool = True):
     """
 
     # Garante que a pasta models/ existe antes de salvar artefatos
-    os.makedirs(MODELS_DIR, exist_ok=True)
+    MODELS_DIR.mkdir(parents=True, exist_ok=True)
 
     # --- Etapa 1: Selecao de features ---
     # Copia apenas as colunas que o modelo vai usar (evita modificar o df original)
@@ -86,12 +86,12 @@ def limpar_e_preparar(df: pd.DataFrame, modo_treino: bool = True):
         X[COLS_CAT] = imputer_cat.fit_transform(X[COLS_CAT])
 
         # Salva os imputadores para uso na inferencia
-        joblib.dump(imputer_num, os.path.join(MODELS_DIR, "imputer_num.joblib"))
-        joblib.dump(imputer_cat, os.path.join(MODELS_DIR, "imputer_cat.joblib"))
+        joblib.dump(imputer_num, MODELS_DIR / "imputer_num.joblib")
+        joblib.dump(imputer_cat, MODELS_DIR / "imputer_cat.joblib")
     else:
         # Na inferencia: carrega os imputadores ajustados no treino
-        imputer_num = joblib.load(os.path.join(MODELS_DIR, "imputer_num.joblib"))
-        imputer_cat = joblib.load(os.path.join(MODELS_DIR, "imputer_cat.joblib"))
+        imputer_num = joblib.load(MODELS_DIR / "imputer_num.joblib")
+        imputer_cat = joblib.load(MODELS_DIR / "imputer_cat.joblib")
 
         # Aplica a mesma transformacao (usa os valores aprendidos no treino)
         X[COLS_NUM] = imputer_num.transform(X[COLS_NUM])

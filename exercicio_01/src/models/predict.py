@@ -10,16 +10,16 @@ Principio de Isolamento:
     Qualquer mudanca no algoritmo de treino nao afeta este arquivo.
 """
 
-import os     # manipulacao de caminhos
 import sys    # encerrar o programa com mensagem de erro
+from pathlib import Path
 import joblib # carregar o modelo salvo em disco
 import pandas as pd  # criar DataFrame para passar ao modelo
 
 # Caminho raiz do projeto (dois niveis acima deste arquivo)
-ROOT = os.path.normpath(os.path.join(os.path.dirname(__file__), "..", ".."))
+ROOT = Path(__file__).parent.parent
 
 # Caminho para o arquivo do modelo salvo pelo train.py
-MODEL_PATH = os.path.join(ROOT, "data", "models", "iris_model.joblib")
+MODEL_PATH = ROOT / "data" / "models" / "iris_model.joblib"
 
 # Nomes das colunas que o modelo espera receber — mesma ordem do treino
 FEATURES = ["sepal_length", "sepal_width", "petal_length", "petal_width"]
@@ -37,7 +37,7 @@ def load_model():
     """
 
     # Verifica se o arquivo do modelo foi criado pelo train.py
-    if not os.path.exists(MODEL_PATH):
+    if not MODEL_PATH.exists():
         print("Modelo nao encontrado. Execute: python main.py train")
         sys.exit(1)  # encerra o programa com codigo de erro 1
 

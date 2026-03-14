@@ -13,7 +13,6 @@ Metricas:
 Os graficos sao salvos em reports/.
 """
 
-import os
 import sys
 import joblib
 import numpy as np
@@ -22,6 +21,7 @@ import matplotlib.pyplot as plt
 import matplotlib
 matplotlib.use("Agg")  # backend sem janela grafica (compativel com servidores)
 import seaborn as sns
+from pathlib import Path
 
 from sklearn.metrics import (
     accuracy_score, classification_report, confusion_matrix,
@@ -29,18 +29,18 @@ from sklearn.metrics import (
 )
 
 # Adiciona raiz do projeto ao path
-ROOT = os.path.normpath(os.path.join(os.path.dirname(__file__), ".."))
-sys.path.insert(0, ROOT)
+ROOT = Path(__file__).parent.parent
+sys.path.insert(0, str(ROOT))
 
 from src.data_loader import TEST_CSV
 from src.preprocessor import limpar_e_preparar, PATH_LE_SPECIES
 
 # Caminhos dos artefatos
-_MODELS   = os.path.join(ROOT, "models")
-_REPORTS  = os.path.join(ROOT, "reports")
+_MODELS   = ROOT / "models"
+_REPORTS  = ROOT / "reports"
 
-MODEL_CLASSIFIER = os.path.join(_MODELS, "classifier.joblib")
-MODEL_REGRESSOR  = os.path.join(_MODELS, "regressor.joblib")
+MODEL_CLASSIFIER = _MODELS / "classifier.joblib"
+MODEL_REGRESSOR  = _MODELS / "regressor.joblib"
 
 
 def evaluate():
@@ -58,13 +58,13 @@ def evaluate():
 
     # Verifica se os modelos existem
     for path in [MODEL_CLASSIFIER, MODEL_REGRESSOR]:
-        if not os.path.exists(path):
+        if not path.exists():
             print(f"Modelo nao encontrado: {path}")
             print("Execute: python main.py train")
             sys.exit(1)
 
     # Carrega dados de teste
-    if not os.path.exists(TEST_CSV):
+    if not TEST_CSV.exists():
         print(f"Dados de teste nao encontrados: {TEST_CSV}")
         print("Execute: python main.py download")
         sys.exit(1)
@@ -116,7 +116,7 @@ def evaluate():
     cm = confusion_matrix(y_especie_true_num, y_especie_pred)
 
     # --- Grafico: Matriz de Confusao ---
-    os.makedirs(_REPORTS, exist_ok=True)
+    _REPORTS.mkdir(parents=True, exist_ok=True)
     fig, ax = plt.subplots(figsize=(7, 5))
     sns.heatmap(
         cm,
@@ -131,7 +131,7 @@ def evaluate():
     ax.set_xlabel("Especie Predita")
     ax.set_ylabel("Especie Real")
     plt.tight_layout()
-    cm_path = os.path.join(_REPORTS, "confusion_matrix.png")
+    cm_path = _REPORTS / "confusion_matrix.png"
     plt.savefig(cm_path, dpi=150)
     plt.close()
     print(f"  Grafico salvo: {cm_path}")
@@ -182,7 +182,7 @@ def evaluate():
     ax.set_xlabel("Especie (predita pelo Classificador)")
     ax.set_ylabel("Erro Absoluto (g)")
     plt.tight_layout()
-    err_path = os.path.join(_REPORTS, "weight_error_by_species.png")
+    err_path = _REPORTS / "weight_error_by_species.png"
     plt.savefig(err_path, dpi=150)
     plt.close()
     print(f"  Grafico salvo: {err_path}")

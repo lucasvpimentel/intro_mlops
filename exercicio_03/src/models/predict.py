@@ -22,18 +22,18 @@ Como executar diretamente:
     python src/models/predict.py
 """
 
-import os     # caminhos de arquivo
 import sys    # encerrar com erro se artefatos nao encontrados
+from pathlib import Path
 import json   # leitura do arquivo JSON de entrada
 import joblib # carregar scaler e modelo do disco
 import pandas as pd  # criar DataFrame com nomes de coluna
 
 # Caminhos raiz e dos artefatos
-ROOT        = os.path.normpath(os.path.join(os.path.dirname(__file__), "..", ".."))
-SCALER_PATH = os.path.join(ROOT, "data", "scaler.joblib")              # gerado por build_features.py
-MODEL_PATH  = os.path.join(ROOT, "data", "models", "wine_model.joblib") # gerado por train.py
-INPUT_PATH  = os.path.join(ROOT, "data", "input.json")                 # arquivo de entrada padrao
-OUTPUT_PATH = os.path.join(ROOT, "data", "output.csv")                 # arquivo de saida padrao
+ROOT        = Path(__file__).parent.parent
+SCALER_PATH = ROOT / "data" / "scaler.joblib"              # gerado por build_features.py
+MODEL_PATH  = ROOT / "data" / "models" / "wine_model.joblib" # gerado por train.py
+INPUT_PATH  = ROOT / "data" / "input.json"                 # arquivo de entrada padrao
+OUTPUT_PATH = ROOT / "data" / "output.csv"                 # arquivo de saida padrao
 
 # As 13 features — mesma ordem usada no treino (a ordem importa para o scaler)
 FEATURES = [
@@ -56,7 +56,7 @@ def load_artifacts():
     """
 
     # Checa quais arquivos estao ausentes
-    missing = [p for p in [SCALER_PATH, MODEL_PATH] if not os.path.exists(p)]
+    missing = [p for p in [SCALER_PATH, MODEL_PATH] if not p.exists()]
     if missing:
         for p in missing:
             print(f"Nao encontrado: {p}")
@@ -88,7 +88,7 @@ def predict_batch(input_path: str = INPUT_PATH, output_path: str = OUTPUT_PATH):
     """
 
     # Verifica se o arquivo de entrada existe
-    if not os.path.exists(input_path):
+    if not Path(input_path).exists():
         print(f"Arquivo de entrada nao encontrado: {input_path}")
         sys.exit(1)
 

@@ -5,12 +5,12 @@ Responsabilidade: exibir relatorio completo com resultados de KS, PSI
 e JSD por feature, com codificacao visual de severidade.
 """
 
-import os
 import json
 from datetime import datetime
+from pathlib import Path
 
-ROOT        = os.path.normpath(os.path.join(os.path.dirname(__file__), "..", ".."))
-REPORT_PATH = os.path.join(ROOT, "data", "drift_report.json")
+ROOT        = Path(__file__).parent.parent
+REPORT_PATH = ROOT / "data" / "drift_report.json"
 
 # Icones de severidade para facilitar leitura visual
 SEVERITY_ICON = {"OK": " OK ", "WARNING": "WARN", "ALERT": "ALRT"}

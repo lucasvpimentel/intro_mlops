@@ -17,8 +17,8 @@ Como executar diretamente:
     python src/models/train.py
 """
 
-import os     # caminhos e criacao de diretorios
 import sys    # adicionar raiz ao path de busca
+from pathlib import Path
 import joblib # serializar o modelo
 import pandas as pd  # leitura do CSV normalizado
 
@@ -29,16 +29,16 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split, cross_val_score
 
 # Caminho raiz do projeto
-ROOT = os.path.normpath(os.path.join(os.path.dirname(__file__), "..", ".."))
+ROOT = Path(__file__).parent.parent
 
 # Permite imports "from src...." ao rodar este arquivo diretamente
-sys.path.insert(0, ROOT)
+sys.path.insert(0, str(ROOT))
 
 # Arquivo de entrada: CSV normalizado pelo build_features.py
-PROC_PATH  = os.path.join(ROOT, "data", "processed.csv")
+PROC_PATH  = ROOT / "data" / "processed.csv"
 
 # Arquivo de saida: modelo serializado
-MODEL_PATH = os.path.join(ROOT, "data", "models", "wine_model.joblib")
+MODEL_PATH = ROOT / "data" / "models" / "wine_model.joblib"
 
 # As 13 features — mesmos nomes e mesma ordem do build_features.py
 FEATURES = [
@@ -71,13 +71,13 @@ def train():
 
     # Principio de Reprodutibilidade: baixa e prepara os dados se necessario
     # download() ja inclui a normalizacao, entao um unico ponto de entrada e suficiente
-    if not os.path.exists(PROC_PATH):
+    if not PROC_PATH.exists():
         print("processed.csv nao encontrado. Preparando dados automaticamente...")
         from src.data.download_data import download
         download()
 
     # Cria data/models/ se nao existir ainda
-    os.makedirs(os.path.dirname(MODEL_PATH), exist_ok=True)
+    MODEL_PATH.parent.mkdir(parents=True, exist_ok=True)
 
     # Carrega o dataset normalizado
     df = pd.read_csv(PROC_PATH)

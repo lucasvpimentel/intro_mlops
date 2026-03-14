@@ -18,25 +18,25 @@ Principio de Reprodutibilidade:
     - Salva os modelos em models/ (pasta deletavel para recriar do zero).
 """
 
-import os
 import sys
 import joblib
 import numpy as np
 import pandas as pd
+from pathlib import Path
 from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
 from sklearn.model_selection import cross_val_score
 
 # Adiciona a raiz do projeto ao path para permitir "from src.x import y"
-ROOT = os.path.normpath(os.path.join(os.path.dirname(__file__), ".."))
-sys.path.insert(0, ROOT)
+ROOT = Path(__file__).parent.parent
+sys.path.insert(0, str(ROOT))
 
 from src.data_loader import TRAIN_CSV
 from src.preprocessor import limpar_e_preparar
 
 # Pasta onde os modelos serao salvos
-_MODELS = os.path.join(ROOT, "models")
-MODEL_CLASSIFIER = os.path.join(_MODELS, "classifier.joblib")
-MODEL_REGRESSOR  = os.path.join(_MODELS, "regressor.joblib")
+_MODELS = ROOT / "models"
+MODEL_CLASSIFIER = _MODELS / "classifier.joblib"
+MODEL_REGRESSOR  = _MODELS / "regressor.joblib"
 
 # Parametros dos modelos
 N_ESTIMATORS  = 200   # numero de arvores na floresta (mais arvores = mais estavel)
@@ -60,7 +60,7 @@ def train():
     """
 
     # --- Passo 1: Verificar/carregar dados de treino ---
-    if not os.path.exists(TRAIN_CSV):
+    if not TRAIN_CSV.exists():
         # Principio de Reprodutibilidade: baixa e prepara automaticamente
         print("Dados de treino nao encontrados. Executando data_loader...")
         from src.data_loader import download_data, split_data
@@ -114,7 +114,7 @@ def train():
     regressor.fit(X_train, y_peso)
 
     # --- Passo 5: Salvar modelos ---
-    os.makedirs(_MODELS, exist_ok=True)
+    _MODELS.mkdir(parents=True, exist_ok=True)
 
     joblib.dump(classifier, MODEL_CLASSIFIER)
     print(f"\nClassificador salvo: {MODEL_CLASSIFIER}")

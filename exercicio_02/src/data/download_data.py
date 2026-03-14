@@ -18,14 +18,14 @@ Como executar diretamente:
 from sklearn.datasets import load_diabetes
 
 import pandas as pd  # para salvar o DataFrame como CSV
-import os            # para construir caminhos de arquivo
 import sys           # para adicionar a raiz do projeto ao path de busca
+from pathlib import Path
 
 # Caminho absoluto da raiz do projeto (dois niveis acima deste arquivo)
-ROOT = os.path.normpath(os.path.join(os.path.dirname(__file__), "..", ".."))
+ROOT = Path(__file__).parent.parent
 
 # Garante que imports como "from src.features..." funcionem ao rodar diretamente
-sys.path.insert(0, ROOT)
+sys.path.insert(0, str(ROOT))
 
 
 def download():
@@ -57,9 +57,7 @@ def download():
     df = df.rename(columns={"target": "progression"})
 
     # Monta o caminho para data/raw.csv a partir da raiz do projeto
-    out_path = os.path.normpath(
-        os.path.join(os.path.dirname(__file__), "..", "..", "data", "raw.csv")
-    )
+    out_path = ROOT / "data" / "raw.csv"
 
     # Salva sem o indice do pandas (seria uma coluna extra desnecessaria)
     df.to_csv(out_path, index=False)

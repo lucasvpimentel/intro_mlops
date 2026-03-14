@@ -18,8 +18,8 @@ Como executar diretamente:
     python src/models/evaluate.py
 """
 
-import os     # caminhos de arquivo
 import joblib # carregar o modelo do disco
+from pathlib import Path
 import pandas as pd  # leitura do CSV
 import numpy as np   # operacoes numericas (necessario para o split)
 
@@ -32,10 +32,10 @@ from sklearn.metrics import (
 )
 
 # Caminhos calculados relativos a este arquivo
-ROOT       = os.path.normpath(os.path.join(os.path.dirname(__file__), "..", ".."))
-PROC_PATH  = os.path.join(ROOT, "data", "processed.csv")             # CSV normalizado
-MODEL_PATH = os.path.join(ROOT, "data", "models", "wine_model.joblib") # modelo serializado
-EVAL_PATH  = os.path.join(ROOT, "data", "evaluation.txt")            # relatorio de saida
+ROOT       = Path(__file__).parent.parent
+PROC_PATH  = ROOT / "data" / "processed.csv"             # CSV normalizado
+MODEL_PATH = ROOT / "data" / "models" / "wine_model.joblib" # modelo serializado
+EVAL_PATH  = ROOT / "data" / "evaluation.txt"            # relatorio de saida
 
 # Features e alvo — iguais aos usados no treino
 FEATURES = [
@@ -63,7 +63,7 @@ def evaluate():
     """
 
     # Verifica se o modelo existe antes de tentar carrega-lo
-    if not os.path.exists(MODEL_PATH):
+    if not MODEL_PATH.exists():
         print("Modelo nao encontrado. Execute: python main.py train")
         return  # encerra a funcao sem erro critico
 

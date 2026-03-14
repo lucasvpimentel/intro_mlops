@@ -16,8 +16,8 @@ Como executar diretamente:
 
 from sklearn.datasets import load_wine  # dataset classico de classificacao de vinhos
 import pandas as pd  # manipulacao de dados tabulares
-import os            # caminhos de arquivo
 import sys           # adicionar raiz ao path de busca do Python
+from pathlib import Path
 
 # Nomes das 13 features quimicas do vinho — substituem os nomes originais do sklearn
 FEATURES = [
@@ -37,10 +37,10 @@ FEATURES = [
 ]
 
 # Caminho absoluto da raiz do projeto
-ROOT = os.path.normpath(os.path.join(os.path.dirname(__file__), "..", ".."))
+ROOT = Path(__file__).parent.parent
 
 # Garante que imports "from src.features..." funcionem ao rodar diretamente
-sys.path.insert(0, ROOT)
+sys.path.insert(0, str(ROOT))
 
 
 def download():
@@ -78,9 +78,7 @@ def download():
     df["cultivar"] = df["target"].map({i: f"class_{i}" for i in range(3)})
 
     # Monta o caminho de saida para data/raw.csv
-    out_path = os.path.normpath(
-        os.path.join(os.path.dirname(__file__), "..", "..", "data", "raw.csv")
-    )
+    out_path = ROOT / "data" / "raw.csv"
 
     # Salva sem o indice do pandas
     df.to_csv(out_path, index=False)

@@ -19,8 +19,8 @@ Como executar diretamente:
     python src/models/train.py --model rf      # usa Random Forest
 """
 
-import os       # caminhos de arquivo e criacao de diretorios
 import sys      # adicionar raiz ao path de busca do Python
+from pathlib import Path
 import argparse # parser de argumentos da linha de comando
 import joblib   # serializar o modelo em disco
 import pandas as pd   # leitura do CSV
@@ -35,16 +35,16 @@ from sklearn.model_selection import train_test_split, cross_val_score  # divisao
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score  # metricas de regressao
 
 # Caminho raiz do projeto
-ROOT = os.path.normpath(os.path.join(os.path.dirname(__file__), "..", ".."))
+ROOT = Path(__file__).parent.parent
 
 # Permite imports "from src...." ao rodar este arquivo diretamente
-sys.path.insert(0, ROOT)
+sys.path.insert(0, str(ROOT))
 
 # Arquivo de entrada: dados ja normalizados pelo build_features.py
-PROC_PATH  = os.path.join(ROOT, "data", "processed.csv")
+PROC_PATH  = ROOT / "data" / "processed.csv"
 
 # Arquivo de saida: modelo serializado
-MODEL_PATH = os.path.join(ROOT, "data", "models", "model.joblib")
+MODEL_PATH = ROOT / "data" / "models" / "model.joblib"
 
 # Features e alvo — devem ser exatamente os mesmos usados no build_features.py
 FEATURES = ["age", "sex", "bmi", "bp", "s1", "s2", "s3", "s4", "s5", "s6"]
@@ -119,13 +119,13 @@ def train(model_type: str = "ridge"):
     # Principio de Reprodutibilidade: garante os dados antes de treinar
     # download() ja inclui a normalizacao (build_features), entao um unico
     # ponto de entrada cobre todo o pipeline de dados
-    if not os.path.exists(PROC_PATH):
+    if not PROC_PATH.exists():
         print("processed.csv nao encontrado. Preparando dados automaticamente...")
         from src.data.download_data import download
         download()
 
     # Cria a pasta data/models/ se nao existir
-    os.makedirs(os.path.dirname(MODEL_PATH), exist_ok=True)
+    MODEL_PATH.parent.mkdir(parents=True, exist_ok=True)
 
     # Carrega os dados ja normalizados
     df = pd.read_csv(PROC_PATH)

@@ -21,17 +21,17 @@ O que e Jensen-Shannon Divergence (JSD)?
         JSD >= 0.1: divergencia significativa
 """
 
-import os
 import sys
 import json
 import numpy as np
 import pandas as pd
+from pathlib import Path
 
-ROOT = os.path.normpath(os.path.join(os.path.dirname(__file__), "..", ".."))
-sys.path.insert(0, ROOT)
+ROOT = Path(__file__).parent.parent
+sys.path.insert(0, str(ROOT))
 
-EX03_DATA = os.path.normpath(os.path.join(ROOT, "..", "exercicio_03", "data", "raw.csv"))
-REF_PATH  = os.path.join(ROOT, "data", "reference_stats.json")
+EX03_DATA = ROOT.parent / "exercicio_03" / "data" / "raw.csv"
+REF_PATH  = ROOT / "data" / "reference_stats.json"
 
 FEATURES = [
     "alcohol", "malic_acid", "ash", "alcalinity_of_ash", "magnesium",
@@ -53,7 +53,7 @@ def prepare_reference():
     Nao recebe parametros e nao retorna nada.
     """
 
-    if not os.path.exists(EX03_DATA):
+    if not EX03_DATA.exists():
         print(f"Dados do Ex03 nao encontrados em: {EX03_DATA}")
         print("Execute: cd ../exercicio_03 && python main.py download")
         sys.exit(1)

@@ -15,26 +15,26 @@ Principio de Isolamento:
     que foram salvos durante o treino.
 """
 
-import os
 import sys
 import json
 import joblib
 import numpy as np
 import pandas as pd
+from pathlib import Path
 
 # Adiciona raiz do projeto ao path
-ROOT = os.path.normpath(os.path.join(os.path.dirname(__file__), ".."))
-sys.path.insert(0, ROOT)
+ROOT = Path(__file__).parent.parent
+sys.path.insert(0, str(ROOT))
 
 from src.preprocessor import limpar_e_preparar, PATH_LE_SPECIES, FEATURE_COLS
 
 # Caminhos dos modelos
-_MODELS          = os.path.join(ROOT, "models")
-MODEL_CLASSIFIER = os.path.join(_MODELS, "classifier.joblib")
-MODEL_REGRESSOR  = os.path.join(_MODELS, "regressor.joblib")
+_MODELS          = ROOT / "models"
+MODEL_CLASSIFIER = _MODELS / "classifier.joblib"
+MODEL_REGRESSOR  = _MODELS / "regressor.joblib"
 
 # Caminho do arquivo de amostras para inferencia em lote
-SAMPLES_PATH = os.path.join(ROOT, "data", "samples", "new_penguins.json")
+SAMPLES_PATH = ROOT / "data" / "samples" / "new_penguins.json"
 
 
 def predict_single(bill_length_mm: float, bill_depth_mm: float,
@@ -58,7 +58,7 @@ def predict_single(bill_length_mm: float, bill_depth_mm: float,
 
     # Verifica se os modelos existem antes de tentar carregar
     for path in [MODEL_CLASSIFIER, MODEL_REGRESSOR]:
-        if not os.path.exists(path):
+        if not path.exists():
             raise FileNotFoundError(
                 f"Modelo nao encontrado: {path}\n"
                 "Execute: python main.py train"
@@ -123,7 +123,7 @@ def predict_batch(samples_path: str = SAMPLES_PATH) -> list:
         lista de dicts com os resultados de cada pinguim
     """
 
-    if not os.path.exists(samples_path):
+    if not Path(samples_path).exists():
         raise FileNotFoundError(f"Arquivo de amostras nao encontrado: {samples_path}")
 
     # Le o JSON com as amostras

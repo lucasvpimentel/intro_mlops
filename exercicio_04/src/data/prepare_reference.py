@@ -19,21 +19,21 @@ Por que salvar as estatisticas e nao o dataset inteiro?
     amostrada) e mais eficiente e suficiente para os testes de drift.
 """
 
-import os
 import sys
 import json
 import numpy as np
 import pandas as pd
+from pathlib import Path
 
 # Caminho raiz deste exercicio
-ROOT = os.path.normpath(os.path.join(os.path.dirname(__file__), "..", ".."))
-sys.path.insert(0, ROOT)
+ROOT = Path(__file__).parent.parent
+sys.path.insert(0, str(ROOT))
 
 # Aponta para os dados de treino do Exercicio 01
-EX01_DATA = os.path.normpath(os.path.join(ROOT, "..", "exercicio_01", "data", "raw.csv"))
+EX01_DATA = ROOT.parent / "exercicio_01" / "data" / "raw.csv"
 
 # Onde salvar as estatisticas de referencia
-REF_PATH = os.path.join(ROOT, "data", "reference_stats.json")
+REF_PATH = ROOT / "data" / "reference_stats.json"
 
 # As 4 features continuas do Iris Dataset
 FEATURES = ["sepal_length", "sepal_width", "petal_length", "petal_width"]
@@ -55,7 +55,7 @@ def prepare_reference():
     """
 
     # Verifica se os dados do Ex01 existem
-    if not os.path.exists(EX01_DATA):
+    if not EX01_DATA.exists():
         print(f"Dados do Ex01 nao encontrados em: {EX01_DATA}")
         print("Execute primeiro: cd ../exercicio_01 && python main.py download")
         sys.exit(1)

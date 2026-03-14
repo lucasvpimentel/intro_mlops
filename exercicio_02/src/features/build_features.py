@@ -18,8 +18,8 @@ Como executar diretamente:
     python src/features/build_features.py
 """
 
-import os     # manipulacao de caminhos
 import sys    # encerrar com erro se arquivo nao encontrado
+from pathlib import Path
 import joblib # salvar e carregar objetos Python em disco
 import pandas as pd  # leitura do CSV e criacao de DataFrame normalizado
 
@@ -28,10 +28,10 @@ import pandas as pd  # leitura do CSV e criacao de DataFrame normalizado
 from sklearn.preprocessing import StandardScaler
 
 # Caminhos calculados em relacao a este arquivo
-ROOT        = os.path.normpath(os.path.join(os.path.dirname(__file__), "..", ".."))
-DATA_PATH   = os.path.join(ROOT, "data", "raw.csv")        # entrada: dados brutos
-SCALER_PATH = os.path.join(ROOT, "data", "scaler.joblib")  # saida: scaler serializado
-PROC_PATH   = os.path.join(ROOT, "data", "processed.csv")  # saida: dados normalizados
+ROOT        = Path(__file__).parent.parent
+DATA_PATH   = ROOT / "data" / "raw.csv"        # entrada: dados brutos
+SCALER_PATH = ROOT / "data" / "scaler.joblib"  # saida: scaler serializado
+PROC_PATH   = ROOT / "data" / "processed.csv"  # saida: dados normalizados
 
 # As 10 features clinicas — exatamente as colunas que o scaler vai transformar
 FEATURES = ["age", "sex", "bmi", "bp", "s1", "s2", "s3", "s4", "s5", "s6"]
@@ -56,7 +56,7 @@ def build(save_processed: bool = True):
     """
 
     # Verifica se o CSV bruto existe antes de tentar le-lo
-    if not os.path.exists(DATA_PATH):
+    if not DATA_PATH.exists():
         print("raw.csv nao encontrado. Execute primeiro:")
         print("  python src/data/download_data.py")
         sys.exit(1)  # encerra com codigo de erro

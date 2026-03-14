@@ -11,17 +11,17 @@ Principio de Limpeza: este modulo entrega os dados prontos para o
 preprocessor.py — sem valores nulos nas colunas alvo.
 """
 
-import os
 import pandas as pd
+from pathlib import Path
 from sklearn.model_selection import train_test_split
 
-# Caminho absoluto para a pasta raiz do projeto (dois niveis acima deste arquivo)
-ROOT     = os.path.normpath(os.path.join(os.path.dirname(__file__), ".."))
+# Caminho absoluto para a pasta raiz do projeto (um nivel acima de src/)
+ROOT     = Path(__file__).parent.parent
 
 # Caminhos dos arquivos de dados
-RAW_CSV  = os.path.join(ROOT, "data", "raw",       "penguins.csv")
-TRAIN_CSV = os.path.join(ROOT, "data", "processed", "train.csv")
-TEST_CSV  = os.path.join(ROOT, "data", "processed", "test.csv")
+RAW_CSV  = ROOT / "data" / "raw"       / "penguins.csv"
+TRAIN_CSV = ROOT / "data" / "processed" / "train.csv"
+TEST_CSV  = ROOT / "data" / "processed" / "test.csv"
 
 # Colunas que o modelo vai usar como entrada
 FEATURE_COLS = ["bill_length_mm", "bill_depth_mm", "flipper_length_mm", "sex", "island"]
@@ -38,7 +38,7 @@ def download_data():
     O seaborn inclui este dataset por padrao — nao requer API key ou conta.
     Se o arquivo ja existe, pula o download (idempotente).
     """
-    if os.path.exists(RAW_CSV):
+    if RAW_CSV.exists():
         # Arquivo ja existe, informa e retorna sem baixar novamente
         print(f"Dataset ja existe: {RAW_CSV}")
         df = pd.read_csv(RAW_CSV)
@@ -57,7 +57,7 @@ def download_data():
     df = sns.load_dataset("penguins")
 
     # Garante que a pasta data/raw/ existe antes de salvar
-    os.makedirs(os.path.dirname(RAW_CSV), exist_ok=True)
+    RAW_CSV.parent.mkdir(parents=True, exist_ok=True)
 
     # Salva o CSV bruto sem alterar nada (principio: raw = dado original)
     df.to_csv(RAW_CSV, index=False)
@@ -85,7 +85,7 @@ def split_data(test_size: float = 0.2, random_state: int = 42):
         test  (DataFrame): dados de teste com todas as colunas
     """
 
-    if not os.path.exists(RAW_CSV):
+    if not RAW_CSV.exists():
         # Se o CSV bruto nao existe, chama download automaticamente
         print("Dataset nao encontrado. Baixando...")
         download_data()
@@ -111,7 +111,7 @@ def split_data(test_size: float = 0.2, random_state: int = 42):
     )
 
     # Garante que a pasta processed/ existe
-    os.makedirs(os.path.dirname(TRAIN_CSV), exist_ok=True)
+    TRAIN_CSV.parent.mkdir(parents=True, exist_ok=True)
 
     # Salva os conjuntos de treino e teste como CSV
     train.to_csv(TRAIN_CSV, index=False)

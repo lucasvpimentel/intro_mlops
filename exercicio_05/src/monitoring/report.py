@@ -5,12 +5,12 @@ Responsabilidade: exibir o relatorio de drift com resultados de KS e PSI
 e salvar em JSON.
 """
 
-import os
 import json
 from datetime import datetime
+from pathlib import Path
 
-ROOT        = os.path.normpath(os.path.join(os.path.dirname(__file__), "..", ".."))
-REPORT_PATH = os.path.join(ROOT, "data", "drift_report.json")
+ROOT        = Path(__file__).parent.parent
+REPORT_PATH = ROOT / "data" / "drift_report.json"
 
 # Simbolos ASCII para cada status de PSI (compativel com cp1252/Windows)
 PSI_SYMBOLS = {"OK": "+", "WARNING": "~", "ALERT": "!"}

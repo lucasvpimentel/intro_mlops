@@ -20,19 +20,19 @@ O que e PSI?
         PSI >= 0.2 : drift severo — investigar e possivelmente retreinar
 """
 
-import os
 import sys
 import json
 import numpy as np
 import pandas as pd
+from pathlib import Path
 
-ROOT = os.path.normpath(os.path.join(os.path.dirname(__file__), "..", ".."))
-sys.path.insert(0, ROOT)
+ROOT = Path(__file__).parent.parent
+sys.path.insert(0, str(ROOT))
 
 # Aponta para os dados brutos do Exercicio 02
-EX02_DATA = os.path.normpath(os.path.join(ROOT, "..", "exercicio_02", "data", "raw.csv"))
+EX02_DATA = ROOT.parent / "exercicio_02" / "data" / "raw.csv"
 
-REF_PATH = os.path.join(ROOT, "data", "reference_stats.json")
+REF_PATH = ROOT / "data" / "reference_stats.json"
 
 # As 10 features clinicas do Diabetes Dataset
 FEATURES = ["age", "sex", "bmi", "bp", "s1", "s2", "s3", "s4", "s5", "s6"]
@@ -52,7 +52,7 @@ def prepare_reference():
     Nao recebe parametros e nao retorna nada.
     """
 
-    if not os.path.exists(EX02_DATA):
+    if not EX02_DATA.exists():
         print(f"Dados do Ex02 nao encontrados em: {EX02_DATA}")
         print("Execute: cd ../exercicio_02 && python main.py download")
         sys.exit(1)
