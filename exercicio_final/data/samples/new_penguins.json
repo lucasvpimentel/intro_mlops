@@ -1,0 +1,37 @@
+[
+  {
+    "bill_length_mm": 39.1,
+    "bill_depth_mm": 18.7,
+    "flipper_length_mm": 181.0,
+    "sex": "Male",
+    "island": "Torgersen"
+  },
+  {
+    "bill_length_mm": 46.5,
+    "bill_depth_mm": 17.9,
+    "flipper_length_mm": 192.0,
+    "sex": "Female",
+    "island": "Dream"
+  },
+  {
+    "bill_length_mm": 50.1,
+    "bill_depth_mm": 15.0,
+    "flipper_length_mm": 225.0,
+    "sex": "Male",
+    "island": "Biscoe"
+  },
+  {
+    "bill_length_mm": 36.7,
+    "bill_depth_mm": 19.3,
+    "flipper_length_mm": 193.0,
+    "sex": "Female",
+    "island": "Torgersen"
+  },
+  {
+    "bill_length_mm": 49.9,
+    "bill_depth_mm": 16.1,
+    "flipper_length_mm": 213.0,
+    "sex": "Male",
+    "island": "Biscoe"
+  }
+]

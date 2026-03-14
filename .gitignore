@@ -1,0 +1,71 @@
+# ============================================================
+# .gitignore — Exercicios de Pos-Graduacao
+# ============================================================
+
+# --- Ambientes virtuais ---
+venv/
+.venv/
+env/
+.env/
+
+# --- Cache do Python ---
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+
+# --- Artefatos de modelos treinados ---
+# Nao versionar: sao reproduziveis via "python main.py train"
+*.joblib
+*.pkl
+*.pickle
+*.h5
+*.pt
+*.pth
+
+# --- Dados gerados (reproduziveis via download/pipeline) ---
+**/data/raw.csv
+**/data/processed.csv
+**/data/raw/
+**/data/processed/
+**/data/output.csv
+**/data/evaluation.txt
+**/data/reference_stats.json
+**/data/new_batch.json
+**/data/drift_report.json
+**/data/scaler.joblib
+
+# --- Excecoes: arquivos de amostra que fazem parte do projeto ---
+!**/data/input.json
+!**/data/samples/
+!**/data/samples/**
+
+# --- Relatorios gerados ---
+**/reports/*.png
+**/reports/*.jpg
+**/reports/*.pdf
+
+# --- Jupyter ---
+.ipynb_checkpoints/
+**/.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# --- IDEs ---
+.vscode/
+.idea/
+*.suo
+*.user
+*.iml
+
+# --- Sistema operacional ---
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- Logs e temporarios ---
+*.log
+*.tmp
+*.swp
+*.swo
+~$*
