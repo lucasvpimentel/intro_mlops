@@ -80,3 +80,23 @@ def predict(sepal_length: float, sepal_width: float,
     confidence = model.predict_proba(features)[0].max() * 100
 
     return species, confidence
+
+
+if __name__ == "__main__":
+    # Exemplos de uso direto: python src/models/predict.py
+    exemplos = [
+        (5.1, 3.5, 1.4, 0.2, "setosa"),
+        (6.0, 2.7, 5.1, 1.6, "versicolor"),
+        (6.7, 3.3, 5.7, 2.5, "virginica"),
+    ]
+
+    print("\n" + "=" * 40)
+    print("  PREDICAO — Iris Classifier")
+    print("=" * 40)
+    for sl, sw, pl, pw, esperado in exemplos:
+        especie, confianca = predict(sl, sw, pl, pw)
+        print(f"  Entrada : {sl} {sw} {pl} {pw}")
+        print(f"  Especie : {especie}  (esperado: {esperado})")
+        print(f"  Confianca: {confianca:.1f}%")
+        print("-" * 40)
+    print("=" * 40)

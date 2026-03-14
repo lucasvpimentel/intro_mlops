@@ -86,3 +86,19 @@ def predict(values: list[float]) -> float:
 
     # Retorna o valor previsto (primeiro elemento do array de predicoes)
     return model.predict(X_scaled)[0]
+
+
+if __name__ == "__main__":
+    # Exemplo de uso direto: python src/models/predict.py
+    # Valores na escala pre-normalizada do sklearn diabetes dataset
+    valores_exemplo = [0.038, 0.050, 0.061, 0.021, -0.044, -0.034, -0.043, -0.002, 0.019, -0.017]
+
+    resultado = predict(valores_exemplo)
+
+    print("\n" + "=" * 50)
+    print("  PREDICAO — Diabetes Regressor")
+    print("=" * 50)
+    print(f"  Entrada             : {valores_exemplo}")
+    print(f"  Progressao (1 ano)  : {resultado:.1f}")
+    print(f"  Escala: ~25 = baixa progressao | ~346 = alta")
+    print("=" * 50)
