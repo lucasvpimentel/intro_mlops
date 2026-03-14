@@ -28,7 +28,7 @@ import numpy as np
 from pathlib import Path
 
 # Caminho raiz do exercicio
-ROOT = Path(__file__).parent.parent
+ROOT = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(ROOT))
 
 # Estatisticas de referencia geradas pelo prepare_reference.py

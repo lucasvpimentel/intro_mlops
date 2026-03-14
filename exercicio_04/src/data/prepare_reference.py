@@ -26,7 +26,7 @@ import pandas as pd
 from pathlib import Path
 
 # Caminho raiz deste exercicio
-ROOT = Path(__file__).parent.parent
+ROOT = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(ROOT))
 
 # Aponta para os dados de treino do Exercicio 01

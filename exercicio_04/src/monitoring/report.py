@@ -11,7 +11,7 @@ from pathlib import Path
 
 
 # Caminho padrao do relatorio de saida
-ROOT        = Path(__file__).parent.parent
+ROOT        = Path(__file__).parent.parent.parent
 REPORT_PATH = ROOT / "data" / "drift_report.json"
 
 

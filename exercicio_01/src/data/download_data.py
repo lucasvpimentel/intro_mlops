@@ -62,7 +62,7 @@ def download():
     # Monta o caminho absoluto para data/raw.csv
     # __file__ e o caminho deste proprio arquivo (download_data.py)
     # Subindo dois niveis chegamos na raiz do projeto
-    out_path = Path(__file__).parent.parent / "data" / "raw.csv"
+    out_path = Path(__file__).parent.parent.parent / "data" / "raw.csv"
 
     # Salva o DataFrame como CSV sem incluir o indice numerico do pandas
     df.to_csv(out_path, index=False)

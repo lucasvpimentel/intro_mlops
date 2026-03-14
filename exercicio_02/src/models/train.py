@@ -35,7 +35,7 @@ from sklearn.model_selection import train_test_split, cross_val_score  # divisao
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score  # metricas de regressao
 
 # Caminho raiz do projeto
-ROOT = Path(__file__).parent.parent
+ROOT = Path(__file__).parent.parent.parent
 
 # Permite imports "from src...." ao rodar este arquivo diretamente
 sys.path.insert(0, str(ROOT))

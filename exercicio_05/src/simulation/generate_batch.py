@@ -13,7 +13,7 @@ import argparse
 import numpy as np
 from pathlib import Path
 
-ROOT = Path(__file__).parent.parent
+ROOT = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(ROOT))
 
 REF_PATH   = ROOT / "data" / "reference_stats.json"

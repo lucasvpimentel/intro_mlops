@@ -37,7 +37,7 @@ FEATURES = [
 ]
 
 # Caminho absoluto da raiz do projeto
-ROOT = Path(__file__).parent.parent
+ROOT = Path(__file__).parent.parent.parent
 
 # Garante que imports "from src.features..." funcionem ao rodar diretamente
 sys.path.insert(0, str(ROOT))

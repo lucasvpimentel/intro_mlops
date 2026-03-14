@@ -24,7 +24,7 @@ from sklearn.model_selection import train_test_split  # divide dados em treino e
 from sklearn.metrics import classification_report     # relatorio de precisao/recall/f1
 
 # ROOT e o caminho absoluto da raiz do projeto (dois niveis acima deste arquivo)
-ROOT = Path(__file__).parent.parent
+ROOT = Path(__file__).parent.parent.parent
 
 # Adiciona a raiz ao path de busca do Python para que imports como
 # "from src.data..." funcionem mesmo ao rodar este arquivo diretamente

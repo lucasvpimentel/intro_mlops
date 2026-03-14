@@ -16,7 +16,7 @@ import joblib # carregar o modelo salvo em disco
 import pandas as pd  # criar DataFrame para passar ao modelo
 
 # Caminho raiz do projeto (dois niveis acima deste arquivo)
-ROOT = Path(__file__).parent.parent
+ROOT = Path(__file__).parent.parent.parent
 
 # Caminho para o arquivo do modelo salvo pelo train.py
 MODEL_PATH = ROOT / "data" / "models" / "iris_model.joblib"

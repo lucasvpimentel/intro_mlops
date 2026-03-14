@@ -29,7 +29,7 @@ import joblib # carregar scaler e modelo do disco
 import pandas as pd  # criar DataFrame com nomes de coluna
 
 # Caminhos raiz e dos artefatos
-ROOT        = Path(__file__).parent.parent
+ROOT        = Path(__file__).parent.parent.parent
 SCALER_PATH = ROOT / "data" / "scaler.joblib"              # gerado por build_features.py
 MODEL_PATH  = ROOT / "data" / "models" / "wine_model.joblib" # gerado por train.py
 INPUT_PATH  = ROOT / "data" / "input.json"                 # arquivo de entrada padrao

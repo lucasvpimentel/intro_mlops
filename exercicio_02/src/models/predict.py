@@ -25,7 +25,7 @@ import joblib # carregar os objetos salvos em disco
 import pandas as pd  # criar DataFrame com nomes de coluna para evitar warnings
 
 # Caminho raiz do projeto
-ROOT = Path(__file__).parent.parent
+ROOT = Path(__file__).parent.parent.parent
 
 # Caminhos dos artefatos gerados pelo pipeline de treino
 SCALER_PATH = ROOT / "data" / "scaler.joblib"          # gerado por build_features.py

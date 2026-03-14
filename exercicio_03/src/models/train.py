@@ -29,7 +29,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split, cross_val_score
 
 # Caminho raiz do projeto
-ROOT = Path(__file__).parent.parent
+ROOT = Path(__file__).parent.parent.parent
 
 # Permite imports "from src...." ao rodar este arquivo diretamente
 sys.path.insert(0, str(ROOT))

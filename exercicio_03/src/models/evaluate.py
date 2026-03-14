@@ -32,7 +32,7 @@ from sklearn.metrics import (
 )
 
 # Caminhos calculados relativos a este arquivo
-ROOT       = Path(__file__).parent.parent
+ROOT       = Path(__file__).parent.parent.parent
 PROC_PATH  = ROOT / "data" / "processed.csv"             # CSV normalizado
 MODEL_PATH = ROOT / "data" / "models" / "wine_model.joblib" # modelo serializado
 EVAL_PATH  = ROOT / "data" / "evaluation.txt"            # relatorio de saida

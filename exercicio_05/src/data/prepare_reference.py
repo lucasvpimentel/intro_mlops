@@ -26,7 +26,7 @@ import numpy as np
 import pandas as pd
 from pathlib import Path
 
-ROOT = Path(__file__).parent.parent
+ROOT = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(ROOT))
 
 # Aponta para os dados brutos do Exercicio 02

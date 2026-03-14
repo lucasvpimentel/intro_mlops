@@ -22,7 +22,7 @@ import sys           # para adicionar a raiz do projeto ao path de busca
 from pathlib import Path
 
 # Caminho absoluto da raiz do projeto (dois niveis acima deste arquivo)
-ROOT = Path(__file__).parent.parent
+ROOT = Path(__file__).parent.parent.parent
 
 # Garante que imports como "from src.features..." funcionem ao rodar diretamente
 sys.path.insert(0, str(ROOT))

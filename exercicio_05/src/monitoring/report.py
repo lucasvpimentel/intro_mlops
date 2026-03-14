@@ -9,7 +9,7 @@ import json
 from datetime import datetime
 from pathlib import Path
 
-ROOT        = Path(__file__).parent.parent
+ROOT        = Path(__file__).parent.parent.parent
 REPORT_PATH = ROOT / "data" / "drift_report.json"
 
 # Simbolos ASCII para cada status de PSI (compativel com cp1252/Windows)

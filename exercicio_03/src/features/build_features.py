@@ -30,7 +30,7 @@ import pandas as pd  # leitura do CSV e montagem do DataFrame normalizado
 from sklearn.preprocessing import StandardScaler
 
 # Caminhos calculados relativos a este arquivo
-ROOT        = Path(__file__).parent.parent
+ROOT        = Path(__file__).parent.parent.parent
 DATA_PATH   = ROOT / "data" / "raw.csv"        # CSV bruto de entrada
 SCALER_PATH = ROOT / "data" / "scaler.joblib"  # scaler serializado de saida
 PROC_PATH   = ROOT / "data" / "processed.csv"  # CSV normalizado de saida
