@@ -39,7 +39,7 @@ def save_report(detection_result: dict, batch_size: int):
         "methods": {
             "KS":  "p < 0.05 = drift",
             "PSI": "< 0.1 OK | 0.1-0.2 WARNING | >= 0.2 ALERT",
-            "JSD": "< 0.05 OK | 0.05-0.1 WARNING | >= 0.1 ALERT",
+            "JSD": "< 0.08 OK | 0.08-0.15 WARNING | >= 0.15 ALERT",
         },
         **detection_result,
     }

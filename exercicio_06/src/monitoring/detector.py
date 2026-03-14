@@ -49,8 +49,9 @@ def compute_psi(ref_proportions: list, bins: list, new_samples: list) -> dict:
     """
     PSI: mede deslocamento de populacao usando bins fixos da referencia.
 
-    Usa bins estendidos com -inf/+inf para capturar valores fora do range
-    de referencia (evita instabilidade numerica com dados shifted).
+    Recorta amostras ao intervalo da referencia via np.clip (padrao de
+    producao). Evita instabilidade numerica com bins de borda em features
+    binarias ou com poucos valores unicos.
 
     Retorna psi_score, psi_status e psi_drift (bool).
     """
@@ -92,8 +93,8 @@ def compute_jsd(ref_proportions: list, bins: list, new_samples: list) -> dict:
     scipy.spatial.distance.jensenshannon retorna a RAIZ QUADRADA do JSD,
     que e a metrica de distancia JS (varia de 0 a 1).
 
-    Usa bins estendidos com -inf/+inf para capturar valores fora do range
-    de referencia (mesma logica do compute_psi).
+    Recorta amostras ao intervalo da referencia via np.clip (mesma logica
+    do compute_psi). Normaliza ambas as distribuicoes antes de calcular JSD.
 
     Retorna jsd_score, jsd_status e jsd_drift (bool).
     """

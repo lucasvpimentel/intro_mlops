@@ -8,8 +8,8 @@ O que e simulacao de drift?
     Em producao, os dados novos chegam continuamente. Para testar o
     monitor, simulamos tres cenarios:
 
-    none: sem drift  — dados gerados da mesma distribuicao do treino
-                       (amostragem direta do dataset original)
+    none: sem drift  — dados gerados de distribuicao normal com os parametros
+                       de referencia (mesma media e desvio padrao do treino)
 
     low:  drift leve — media de cada feature deslocada em 0.5 desvios padrao
                        (mudanca sutil, pode passar despercebida)

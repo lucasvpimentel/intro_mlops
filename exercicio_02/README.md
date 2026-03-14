@@ -133,6 +133,12 @@ Progressao estimada da diabetes (1 ano): 209.1
 (Escala: ~25 = baixa progressao | ~346 = alta progressao)
 ```
 
+> **Por que os valores parecem pequenos?**
+> O `sklearn.datasets.load_diabetes()` ja entrega as features pre-padronizadas
+> (media zero, escala ~[-0.2, +0.2]). Os valores acima sao da escala original
+> do dataset — nao representam idade em anos ou IMC em kg/m². O scaler interno
+> aplica uma normalizacao adicional sobre esses valores antes de passar ao modelo.
+
 ---
 
 ## Artefatos Salvos e Uso Independente
@@ -154,6 +160,7 @@ venv\Scripts\activate          # Windows
 # source venv/bin/activate     # Linux/Mac
 
 # 2. Prever — so carrega scaler.joblib e model.joblib, nao retreina nada
+# Os valores abaixo estao na escala pre-padronizada do sklearn diabetes dataset
 python main.py predict 0.038 0.050 0.061 0.021 -0.044 -0.034 -0.043 -0.002 0.019 -0.017
 ```
 

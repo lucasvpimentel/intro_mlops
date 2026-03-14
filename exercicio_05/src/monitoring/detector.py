@@ -45,7 +45,6 @@ def run_ks_test(reference_samples: list, new_samples: list) -> dict:
 
 
 def compute_psi(ref_proportions: list, bins: list, new_samples: list) -> dict:
-    # Adiciona bordas -inf e +inf para capturar valores fora do range de referencia
     """
     Calcula o PSI (Population Stability Index) usando os bins da referencia.
 
