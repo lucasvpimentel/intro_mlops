@@ -402,3 +402,36 @@ cd exercicio_05 && python main.py pipeline
 cd exercicio_03 && python main.py download && cd ..
 cd exercicio_06 && python main.py pipeline
 ```
+
+---
+
+### Pastas e Arquivos Gerados Automaticamente
+
+O `.gitignore` exclui do repositorio tudo que e gerado pelo pipeline:
+`venv/`, modelos `.joblib`, dados `.csv/.json` e graficos `.png`.
+**Ao clonar, nenhuma dessas pastas existira — e isso e esperado.**
+
+Cada exercicio recria tudo automaticamente ao rodar o pipeline:
+
+```bash
+python main.py pipeline
+# cria data/, baixa o dataset, treina o modelo, salva os artefatos
+```
+
+Internamente, cada modulo usa `os.makedirs(..., exist_ok=True)` antes de
+salvar qualquer arquivo, e o `train.py` chama `download_data()` sozinho
+se os dados nao existirem — principio de Reprodutibilidade.
+
+**O que e recriado por cada comando:**
+
+| Comando | O que cria |
+|---|---|
+| `python main.py download` | `data/raw.csv` (ou `data/raw/`) |
+| `python main.py features` | `data/processed.csv`, `data/scaler.joblib` |
+| `python main.py train` | `data/models/*.joblib` (ou `models/`) |
+| `python main.py pipeline` | tudo acima em sequencia |
+| `python main.py prepare` | `data/reference_stats.json` (drift monitors) |
+
+**Regra pratica:** qualquer pasta que o `.gitignore` exclui, o codigo
+recria sozinho. Se algo nao existir, rode `python main.py pipeline`
+dentro da pasta do exercicio.
