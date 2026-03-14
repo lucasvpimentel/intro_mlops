@@ -16,6 +16,23 @@ de modelos, transformadores e no ciclo treino → inferencia.
 **Features sugeridas:** pclass, sex, age, sibsp, parch, fare, embarked
 **Atenção:** o dataset tem valores ausentes em `age` e `embarked` — o preprocessamento e obrigatorio
 
+**Como carregar:**
+
+```python
+import seaborn as sns
+import pandas as pd
+
+df = sns.load_dataset("titanic")
+df.to_csv("data/raw.csv", index=False)
+
+# Colunas disponiveis:
+# survived, pclass, sex, age, sibsp, parch, fare, embarked,
+# class, who, adult_male, deck, embark_town, alive, alone
+print(df.shape)        # (891, 15)
+print(df.dtypes)
+print(df.isnull().sum())  # age: 177 nulos, deck: 688 nulos, embarked: 2 nulos
+```
+
 **O que praticar:**
 - Imputacao de valores ausentes (SimpleImputer)
 - Codificacao de variaveis categoricas (LabelEncoder ou pd.get_dummies)
@@ -66,6 +83,23 @@ Resultado:
 **Features sugeridas:** total_bill, sex, smoker, day, time, size
 **Target:** tip (valor em dolares)
 
+**Como carregar:**
+
+```python
+import seaborn as sns
+
+df = sns.load_dataset("tips")
+df.to_csv("data/tips.csv", index=False)
+
+# Colunas disponiveis:
+# total_bill (float), tip (float), sex (Female/Male),
+# smoker (Yes/No), day (Sun/Sat/Thur/Fri),
+# time (Dinner/Lunch), size (int 1-6)
+print(df.shape)        # (244, 7)
+print(df.isnull().sum())  # nenhum valor ausente
+print(df["tip"].describe())
+```
+
 **O que praticar:**
 - Regressao sobre um dataset pequeno e interpretavel
 - Lidar com features categoricas ordinais e nominais juntas
@@ -107,6 +141,28 @@ Gorjeta estimada: R$ 3.87
 **Tarefa:** Regressao — prever o preco (`price`) de um diamante
 **Features sugeridas:** carat, cut, color, clarity, depth, table, x, y, z
 **Atenção:** cut, color e clarity sao categoricas ordinais — a ordem importa (ex: Fair < Good < Very Good < Premium < Ideal)
+
+**Como carregar:**
+
+```python
+import seaborn as sns
+
+df = sns.load_dataset("diamonds")
+df.to_csv("data/diamonds.csv", index=False)
+
+# Colunas disponiveis:
+# carat (float), cut (category), color (category), clarity (category),
+# depth (float), table (float), price (int), x, y, z (float)
+print(df.shape)   # (53940, 10)
+print(df["cut"].unique())      # ['Ideal', 'Premium', 'Good', 'Very Good', 'Fair']
+print(df["color"].unique())    # ['E', 'I', 'J', 'H', 'F', 'G', 'D']
+print(df["clarity"].unique())  # ['SI2', 'SI1', 'VS1', 'VS2', 'VVS2', 'VVS1', 'I1', 'IF']
+
+# Ordem correta para OrdinalEncoder:
+CUT_ORDER     = ["Fair", "Good", "Very Good", "Premium", "Ideal"]
+COLOR_ORDER   = ["J", "I", "H", "G", "F", "E", "D"]       # D = melhor cor
+CLARITY_ORDER = ["I1", "SI2", "SI1", "VS2", "VS1", "VVS2", "VVS1", "IF"]
+```
 
 **O que praticar:**
 - Encoding ordinal com OrdinalEncoder (preserva a ordem das categorias)
@@ -153,6 +209,26 @@ Preco estimado: $ 4.231
 **Features sugeridas:** cylinders, displacement, horsepower, weight, acceleration, model_year, origin
 **Atenção:** `horsepower` tem alguns valores ausentes; `origin` e categorica (usa, europe, japan)
 
+**Como carregar:**
+
+```python
+import seaborn as sns
+
+df = sns.load_dataset("mpg")
+df.to_csv("data/mpg.csv", index=False)
+
+# Colunas disponiveis:
+# mpg (float), cylinders (int), displacement (float), horsepower (float),
+# weight (int), acceleration (float), model_year (int),
+# origin (usa/europe/japan), name (str — ignorar)
+print(df.shape)   # (398, 9)
+print(df.isnull().sum())  # horsepower: 6 nulos
+print(df["origin"].value_counts())  # usa: 249, europe: 70, japan: 79
+
+# Remover linhas com mpg ausente antes de treinar
+df = df.dropna(subset=["mpg"])
+```
+
 **O que praticar:**
 - Pipeline com imputacao + encoding + scaling em sequencia
 - Usar `sklearn.pipeline.Pipeline` para encadear transformadores (novo conceito)
@@ -198,6 +274,27 @@ Consumo estimado: 30.2 mpg
 **Features:** 30 features numericas derivadas de imagens de celulas
 **Atenção:** nao ha valores ausentes nem categoricas — o desafio e lidar com muitas features
 
+**Como carregar:**
+
+```python
+from sklearn.datasets import load_breast_cancer
+import pandas as pd
+
+raw = load_breast_cancer()
+
+df = pd.DataFrame(raw.data, columns=raw.feature_names)
+df["target"] = raw.target          # 0 = maligno, 1 = benigno
+df.to_csv("data/raw.csv", index=False)
+
+# Informacoes do dataset:
+print(df.shape)          # (569, 31)
+print(df["target"].value_counts())  # 1: 357 benignos | 0: 212 malignos
+print(raw.feature_names)
+# ['mean radius', 'mean texture', 'mean perimeter', 'mean area',
+#  'mean smoothness', ... (30 features no total)]
+print(df.isnull().sum().sum())  # 0 — sem valores ausentes
+```
+
 **O que praticar:**
 - Classificacao com muitas features numericas (alta dimensionalidade relativa)
 - Comparar acuracia, precisao, recall e F1 (metricas alem da acuracia)
@@ -240,12 +337,39 @@ Diagnosticos medicos requerem avaliacao profissional.
 
 ---
 
-## Exercicio F — Qualidade do Ar (California Housing como proxy)
+## Exercicio F — Preco de Imoveis (California Housing)
 
 **Dataset:** `sklearn.datasets.fetch_california_housing()`
 **Tarefa:** Regressao — prever o valor mediano de imoveis (`MedHouseVal`) por regiao
 **Features:** MedInc, HouseAge, AveRooms, AveBedrms, Population, AveOccup, Latitude, Longitude
 **Atenção:** Latitude e Longitude sao features geograficas — sao uteis mas podem precisar de tratamento
+
+**Como carregar:**
+
+```python
+from sklearn.datasets import fetch_california_housing
+import pandas as pd
+
+raw = fetch_california_housing()
+
+df = pd.DataFrame(raw.data, columns=raw.feature_names)
+df["MedHouseVal"] = raw.target     # valor em centenas de milhares de dolares
+df.to_csv("data/housing.csv", index=False)
+
+# Colunas disponiveis:
+# MedInc      — renda mediana do bloco (em dezenas de milhares de dolares)
+# HouseAge    — idade mediana dos imoveis do bloco
+# AveRooms    — media de comodos por residencia
+# AveBedrms   — media de quartos por residencia
+# Population  — populacao do bloco
+# AveOccup    — media de moradores por residencia
+# Latitude    — latitude geografica
+# Longitude   — longitude geografica
+# MedHouseVal — target: valor mediano (em centenas de milhares de USD)
+print(df.shape)             # (20640, 9)
+print(df.isnull().sum())    # 0 — sem valores ausentes
+print(df["MedHouseVal"].describe())
+```
 
 **O que praticar:**
 - Regressao geografica (features de localizacao)
