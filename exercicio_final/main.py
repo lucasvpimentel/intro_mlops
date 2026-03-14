@@ -76,9 +76,7 @@ def cmd_predict_batch(args):
     from src.inference import predict_batch, SAMPLES_PATH
 
     path = args.input if hasattr(args, "input") and args.input else SAMPLES_PATH
-    results = predict_batch(path)
-
-    print(f"\nTotal: {len(results)} predicoes concluidas.")
+    predict_batch(path)
 
 
 def cmd_pipeline(_args):

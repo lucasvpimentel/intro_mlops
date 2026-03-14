@@ -76,8 +76,12 @@ def cmd_predict(args):
 
     # Chama a funcao de predicao e exibe o resultado formatado
     result = predict(valores)
-    print(f"\nProgressao estimada da diabetes (1 ano): {result:.1f}")
-    print("(Escala: ~25 = baixa progressao | ~346 = alta progressao)")
+    print("\n" + "=" * 50)
+    print("  PREDICAO — Diabetes Regressor")
+    print("=" * 50)
+    print(f"  Progressao estimada (1 ano) : {result:.1f}")
+    print(f"  Escala: ~25 = baixa progressao | ~346 = alta")
+    print("=" * 50)
 
 
 def cmd_pipeline(args):

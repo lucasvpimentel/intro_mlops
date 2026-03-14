@@ -60,9 +60,13 @@ def cmd_predict(args):
     # Desempacota a lista de 4 valores como 4 argumentos separados para predict()
     species, confidence = predict(*valores)
 
-    # Exibe o resultado formatado
-    print(f"\nEspecie prevista : {species}")
-    print(f"Confianca        : {confidence:.1f}%")
+    # Exibe o resultado formatado com o mesmo estilo do restante do projeto
+    print("\n" + "=" * 40)
+    print("  PREDICAO — Iris Classifier")
+    print("=" * 40)
+    print(f"  Especie    : {species}")
+    print(f"  Confianca  : {confidence:.1f}%")
+    print("=" * 40)
 
 
 def cmd_pipeline(_args):

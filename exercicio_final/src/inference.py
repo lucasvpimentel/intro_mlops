@@ -130,7 +130,14 @@ def predict_batch(samples_path: str = SAMPLES_PATH) -> list:
     with open(samples_path, "r", encoding="utf-8") as f:
         samples = json.load(f)
 
-    print(f"Processando {len(samples)} pinguins de {samples_path}")
+    print("\n" + "=" * 55)
+    print("  PREDICAO EM LOTE — Penguins MLOps")
+    print("=" * 55)
+    print(f"  Arquivo : {samples_path}")
+    print(f"  Total   : {len(samples)} pinguins")
+    print("-" * 55)
+    print(f"  {'#':>2}  {'Especie':<12} {'Confianca':>9}  {'Peso (g)':>8}")
+    print(f"  {'-'*2}  {'-'*12} {'-'*9}  {'-'*8}")
 
     results = []
     for i, sample in enumerate(samples):
@@ -147,11 +154,12 @@ def predict_batch(samples_path: str = SAMPLES_PATH) -> list:
         results.append(result)
 
         print(
-            f"  [{i+1:2d}] {result['especie']:<12} "
-            f"{result['confianca_pct']:>5.1f}%  "
+            f"  [{i+1:2d}]  {result['especie']:<12} "
+            f"{result['confianca_pct']:>8.1f}%  "
             f"{result['peso_estimado_g']:>7.0f}g"
         )
 
+    print("=" * 55)
     return results
 
 

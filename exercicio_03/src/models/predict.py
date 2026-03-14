@@ -129,11 +129,16 @@ def predict_batch(input_path: str = INPUT_PATH, output_path: str = OUTPUT_PATH):
 
     # Salva o CSV de saida
     df_output.to_csv(output_path, index=False)
-    print(f"Previsoes geradas para {len(df_output)} vinhos.")
-    print(f"Resultado salvo em: {output_path}")
 
-    # Exibe apenas as colunas de resultado no terminal (sem repetir as features)
+    # Exibe o resultado formatado com o mesmo estilo do restante do projeto
+    print("\n" + "=" * 55)
+    print("  PREDICAO EM LOTE — Wine Classifier")
+    print("=" * 55)
+    print(f"  Vinhos processados : {len(df_output)}")
+    print(f"  Resultado salvo em : {output_path}")
+    print("-" * 55)
     print(df_output[["cultivar_previsto", "confianca_pct"]].to_string())
+    print("=" * 55)
 
     return df_output
 
